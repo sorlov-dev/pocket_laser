@@ -56,7 +56,7 @@ export function makeDangerTexture(): THREE.CanvasTexture {
 
     // rows of tiny unreadable "technical" text
     g.fillStyle = '#5a5a55'
-    for (let row = 0; row < 6; row++) {
+    for (let row = 0; row < 5; row++) {
       const y = 124 + row * 17
       let x = ox + 4
       while (x < ox + 470) {
@@ -65,6 +65,10 @@ export function makeDangerTexture(): THREE.CanvasTexture {
         x += len + 5 + Math.random() * 10
       }
     }
+    // maker mark — our handle, woven into the label's fine print
+    g.fillStyle = '#2a2a2a'
+    g.font = '600 13px system-ui, -apple-system, sans-serif'
+    g.fillText('MFG.  sorlov-dev', ox + 4, 216)
     // spec line
     g.fillStyle = '#2a2a2a'
     g.font = '600 13px system-ui, -apple-system, sans-serif'

@@ -4,7 +4,7 @@ import { useFrame } from '@react-three/fiber'
 import type { ThreeEvent } from '@react-three/fiber'
 import { Html, useCursor } from '@react-three/drei'
 import { a, useSpring } from '@react-spring/three'
-import { R, reducedMotion } from '../refs'
+import { R, reducedMotion, isPortrait } from '../refs'
 import { useStore, pressButton, cancelModes } from '../stateMachine'
 import {
   yellowMat,
@@ -94,6 +94,9 @@ export function Pointer() {
     // side-on, near-horizontal pose so the muzzle fires off to the mid-left
     g.lookAt(-3, 0.05, 0.35)
     g.rotateZ(-0.5) // roll the brass button toward the camera
+    // portrait: tilt the whole pointer diagonally in screen space (world Z ≈ the
+    // camera's view axis) so its long body fills a tall phone frame
+    if (isPortrait()) g.rotateOnWorldAxis(new THREE.Vector3(0, 0, 1), -0.5)
     g.updateMatrixWorld(true)
   }, [])
 

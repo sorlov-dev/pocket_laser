@@ -41,6 +41,12 @@ export const reducedMotion =
   typeof window !== 'undefined' &&
   window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
+// Portrait (tall, narrow) viewports — phones — frame a long horizontal object
+// poorly, so we pull the camera back and tilt the pointer diagonally there.
+// Desktop / landscape is left exactly as it was.
+export const isPortrait = () =>
+  typeof window !== 'undefined' && window.innerHeight > window.innerWidth
+
 const _fwd = new THREE.Vector3()
 
 // Recompute where the pattern floats: straight out of the muzzle, into the black.

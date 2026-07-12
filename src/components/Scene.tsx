@@ -1,6 +1,6 @@
 import { Environment, Lightformer, OrbitControls } from '@react-three/drei'
 import { EffectComposer, Bloom } from '@react-three/postprocessing'
-import { R } from '../refs'
+import { R, isPortrait } from '../refs'
 import { GestureManager } from './GestureManager'
 import { Pointer } from './Pointer'
 import { Nozzles } from './Nozzle'
@@ -39,7 +39,7 @@ export function Scene() {
         enableDamping
         dampingFactor={0.08}
         minDistance={3.2}
-        maxDistance={11}
+        maxDistance={isPortrait() ? 14 : 11}
         maxPolarAngle={1.62}
         minPolarAngle={0.25}
       />
