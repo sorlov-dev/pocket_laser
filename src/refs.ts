@@ -16,7 +16,9 @@ export const R = {
   aimTarget: new THREE.Vector3(-3.4, 1.1, -4.6),
 }
 
-export const FLOOR_Y = -1.45
+// Invisible ground plane, well below the floating pointer so the chain hangs
+// free and dropped cells have room to tumble (but stay in frame).
+export const FLOOR_Y = -2.2
 
 // Pointer body layout (local space, +Z = forward / nozzle end)
 export const BODY_R = 0.38

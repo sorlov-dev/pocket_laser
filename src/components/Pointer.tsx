@@ -33,9 +33,9 @@ function Button() {
       <a.mesh position-x={px} position-y={0.15} scale={[0.7, 1, 1]} material={goldMat}>
         <sphereGeometry args={[0.09, 24, 16]} />
       </a.mesh>
-      {/* generous invisible hit target */}
+      {/* generous invisible hit target — big enough to find without hunting */}
       <mesh
-        position={[0.44, 0.15, 0]}
+        position={[0.42, 0.15, 0]}
         onPointerDown={(e: ThreeEvent<PointerEvent>) => {
           e.stopPropagation()
           ensureAudio()
@@ -49,7 +49,7 @@ function Button() {
         }}
         onPointerOut={() => setHovered(false)}
       >
-        <sphereGeometry args={[0.2, 12, 8]} />
+        <sphereGeometry args={[0.4, 16, 12]} />
         <meshBasicMaterial colorWrite={false} depthWrite={false} />
       </mesh>
     </group>

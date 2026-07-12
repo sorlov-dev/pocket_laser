@@ -16,7 +16,8 @@ const tmpQ = new THREE.Quaternion()
 const tPos = new THREE.Vector3()
 const tQ = new THREE.Quaternion()
 
-const PARK_POS = new THREE.Vector3(1.5, FLOOR_Y + 0.01, 2.15)
+// Cap parks at a fixed, comfortably-in-frame spot (independent of the lower floor).
+const PARK_POS = new THREE.Vector3(1.5, -1.5, 2.15)
 const PARK_QUAT = new THREE.Quaternion().setFromEuler(new THREE.Euler(Math.PI / 2, 0, 0))
 
 // LR41 stack positions inside the tube (pointer local Z)
@@ -190,13 +191,13 @@ function Batteries() {
             b.pos.set(0, 0, OPENING_Z).applyMatrix4(pg.matrixWorld)
             b.vel
               .copy(rearDir)
-              .multiplyScalar(reducedMotion ? 0.8 : 1.5)
+              .multiplyScalar(reducedMotion ? 1.0 : 2.1)
               .add(
-                new THREE.Vector3((Math.random() - 0.5) * 0.3, 0, (Math.random() - 0.5) * 0.3)
+                new THREE.Vector3((Math.random() - 0.5) * 0.9, 0.2, (Math.random() - 0.5) * 0.9)
               )
             pg.getWorldQuaternion(b.quat)
             b.quat.multiply(tmpQ.setFromEuler(eul.set(Math.PI / 2, 0, 0)))
-            b.spin.set(Math.random() * 4 - 2, Math.random() * 4 - 2, Math.random() * 4 - 2)
+            b.spin.set(Math.random() * 8 - 4, Math.random() * 8 - 4, Math.random() * 8 - 4)
             setState({ batteriesIn: s.batteriesIn - 1, everEjected: true })
             tick(0.7)
           }
