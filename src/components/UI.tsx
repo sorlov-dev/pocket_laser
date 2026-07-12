@@ -53,7 +53,7 @@ export function UI() {
   return (
     <>
       <header className={`title ${firing ? 'dim' : ''}`}>
-        <h1>Laser Pointer, 1998</h1>
+        <h1>Laser Pointer</h1>
         <p>Keychain laser · made in China · sold everywhere</p>
       </header>
 
