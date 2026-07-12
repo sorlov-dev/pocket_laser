@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { useStore, deriveHint, selectNozzle, NOZZLES, type NozzleId } from '../stateMachine'
 
 // Tiny inline previews of each cap's pattern for the side list.
@@ -49,6 +50,45 @@ export function UI() {
   const tip = useStore((s) => s.tipNozzle)
   const rotatedOnce = useStore((s) => s.rotatedOnce)
   const firing = useStore((s) => s.mode === 'aiming')
+  const [copied, setCopied] = useState(false)
+
+  function flashCopied() {
+    setCopied(true)
+    setTimeout(() => setCopied(false), 1600)
+  }
+
+  function share() {
+    const url = window.location.href
+    // Mobile: hand off to the native share sheet.
+    if (navigator.share) {
+      navigator
+        .share({
+          title: 'Laser Pointer',
+          text: 'A retro keychain laser you can twist, fire, and play with.',
+          url,
+        })
+        .catch(() => {})
+      return
+    }
+    // Desktop: copy the link. The async Clipboard API needs a secure context;
+    // fall back to the legacy execCommand path for older / non-secure browsers.
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard.writeText(url).then(flashCopied).catch(() => {})
+      return
+    }
+    try {
+      const ta = document.createElement('textarea')
+      ta.value = url
+      ta.style.position = 'fixed'
+      ta.style.opacity = '0'
+      document.body.appendChild(ta)
+      ta.select()
+      if (document.execCommand('copy')) flashCopied()
+      ta.remove()
+    } catch {
+      /* no clipboard available — nothing more we can do */
+    }
+  }
 
   return (
     <>
@@ -56,6 +96,44 @@ export function UI() {
         <h1>Laser Pointer</h1>
         <p>Keychain laser · made in China · sold everywhere</p>
       </header>
+
+      <nav className={`links ${firing ? 'dim' : ''}`} aria-label="Links">
+        <a
+          className="tg"
+          href="https://t.me/orlovsdev"
+          target="_blank"
+          rel="noopener noreferrer"
+          title="Telegram"
+          aria-label="Telegram channel"
+        >
+          <svg viewBox="0 0 24 24" aria-hidden>
+            <path
+              d="M9.78 18.65l.28-4.23 7.68-6.92c.34-.31-.07-.46-.52-.19L7.74 13.3 3.64 12c-.88-.25-.89-.86.2-1.3l15.97-6.16c.73-.33 1.43.18 1.15 1.3l-2.72 12.81c-.19.91-.74 1.13-1.5.71L12.6 16.3l-1.99 1.93c-.23.23-.42.42-.83.42z"
+              fill="currentColor"
+            />
+          </svg>
+          <span className="tg-label">Telegram channel</span>
+        </a>
+        <button className="share" onClick={share} title="Share" aria-label="Share this toy">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.7"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            aria-hidden
+          >
+            <circle cx="18" cy="5" r="3" />
+            <circle cx="6" cy="12" r="3" />
+            <circle cx="18" cy="19" r="3" />
+            <path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4" />
+          </svg>
+        </button>
+        <span className={`copied ${copied ? 'show' : ''}`} role="status" aria-live="polite">
+          Link copied
+        </span>
+      </nav>
 
       <p className={`lore ${rotatedOnce || firing ? 'gone' : ''}`}>
         The pocket laser every desk drawer once held.

@@ -10,3 +10,7 @@ dist-ssr
 .vscode
 *.log
 npm-debug.log*
+
+# Claude Code local files
+.claude/launch.json
+.claude/settings.local.json
